@@ -17,7 +17,6 @@ public class Connection extends Thread{
 	boolean authenticated = false;
 	
 	String name;
-	Object value;
 	int howToHandle;
 	
 	public Connection(Socket connection) {
@@ -47,9 +46,29 @@ public class Connection extends Thread{
 			
 			if(authenticated) {
 				
+				if(args[0].equalsIgnoreCase("value")) {
+					ValueHandeler.handleValue(Integer.valueOf(args[1]), howToHandle);
+				}
+					
 			}else {
 				//Login
-				//Syntax: login:{password}:{device_name}:{data_type}:{data_handeling}
+				//Syntax: login:{password}:{device_name}:{data_handeling}
+				if(args[0].equalsIgnoreCase("login")) {
+					String password = args[1];
+					String deviceName = args[2];
+					int dataHandeling = Integer.valueOf(args[3]);
+					
+					if(password.equalsIgnoreCase(Settings.login_key)) {
+						name = deviceName;
+						howToHandle = dataHandeling;
+						authenticated = true;
+						
+					}else {
+						try {throw new Exception("Wrong Password");} catch (Exception e) {e.printStackTrace();}
+					}
+					
+				}
+				
 			}
 			
 		}

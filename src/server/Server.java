@@ -17,7 +17,7 @@ public class Server {
 		try {
 			server = new ServerSocket(Settings.server_port);
 		} catch (IOException e) {System.out.println("ERROR: Failded to initialize Server!");e.printStackTrace();}
-		
+		System.out.println("Server loaded on port "+Settings.server_port+"...");
 		
 		//Main Connection Listener (Accepts all Connections)
 		while(true) {

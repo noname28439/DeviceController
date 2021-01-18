@@ -7,7 +7,7 @@ public class ValueHandeler {
 	public static int SAVE_ARRAY = 0;
 	
 	
-	public static void handleValue(Object value, int handleMode) {
+	public static void handleValue(int value, int handleMode) {
 		System.err.println("OPEN-ENDPOINT: Value Handeling loading...");
 	}
 	

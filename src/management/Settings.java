@@ -2,7 +2,7 @@ package management;
 
 public class Settings {
 
-	public static int server_port = 0;
+	public static int server_port = 13579;
 	
 	public static String login_key = "SYHVsangj8kyQRTSfABA";
 	
