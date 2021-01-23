@@ -53,7 +53,7 @@ public class Connection extends Thread{
 			
 			if(authenticated) {
 				
-				if(args[0].equalsIgnoreCase("value")) {
+				if(args[0].equalsIgnoreCase("set")) {
 					int receavedValue = Integer.valueOf(args[1]);
 					
 					switch (howToHandle) {
@@ -80,6 +80,39 @@ public class Connection extends Thread{
 						break;
 					}
 					
+				}
+				
+				if(args[0].equalsIgnoreCase("get")) {
+					String reqestedName = args[1];
+					if(Server.getValueByName(reqestedName)!=null) {
+						ArrayList<Integer> foundValue = Server.getValueByName(reqestedName);
+						
+						String answer = "";
+						
+						
+//						answer+= "{";
+//						answer+= "MODE: "+howToHandle;
+//						answer+=",";
+//						answer+="Values: ";
+//						answer+="[";
+//						for(int i = 0; i<foundValue.size();i++) {
+//							
+//						}
+//						answer+="]";
+//						answer+= "}";
+						
+						
+						answer+=String.valueOf(howToHandle);
+						answer+="|";
+						for(int i = 0; i<foundValue.size();i++) {
+							answer += " "+foundValue.get(i);
+						}
+						answer.replaceFirst(" ", "");
+						
+						System.out.println("Answer:");
+						System.out.println(answer);
+						
+					}
 				}
 					
 			}else {
