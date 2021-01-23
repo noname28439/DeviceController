@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import management.Settings;
@@ -18,6 +19,12 @@ public class Connection extends Thread{
 	
 	String name;
 	int howToHandle;
+	
+	private ArrayList<Integer> value = new ArrayList<>();
+	
+	public ArrayList<Integer> getValue() {
+		return value;
+	}
 	
 	public Connection(Socket connection) {
 		this.connection = connection;
@@ -47,7 +54,32 @@ public class Connection extends Thread{
 			if(authenticated) {
 				
 				if(args[0].equalsIgnoreCase("value")) {
-					ValueHandeler.handleValue(Integer.valueOf(args[1]), howToHandle);
+					int receavedValue = Integer.valueOf(args[1]);
+					
+					switch (howToHandle) {
+					case ValueHandeler.SAVE_VAR:
+							if(value.size()>0)
+								value.set(0, receavedValue);
+							else
+								value.add(receavedValue);
+							break;
+						
+					case ValueHandeler.SAVE_ARRAY:
+						value.add(receavedValue);
+						break;
+					
+					case ValueHandeler.LOGFILE_VAR:
+						
+						break;
+						
+					case ValueHandeler.LOGFILE_ARRAY:
+						
+						break;
+
+					default:
+						break;
+					}
+					
 				}
 					
 			}else {
