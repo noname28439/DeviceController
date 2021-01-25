@@ -31,6 +31,8 @@ public class Connection extends Thread{
 	
 	private ArrayList<String> triggerList = new ArrayList<>();
 	
+	public String lastPingTime = "no ping receaved yet...";
+	
 	public ArrayList<Integer> getValue() {
 		return value;
 	}
@@ -115,6 +117,10 @@ public class Connection extends Thread{
 					triggerList.add(args[1]);
 					System.out.println(name + " trigger add "+args[1]);
 					sendMessage("successfully added trigger "+args[1]);
+				}
+				
+				if(args[0].equalsIgnoreCase("ping")) {
+					lastPingTime = currentTime();
 				}
 				
 				if(args[0].equalsIgnoreCase("get")) {
