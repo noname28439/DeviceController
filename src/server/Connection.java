@@ -3,13 +3,20 @@ package server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import management.Settings;
 
 public class Connection extends Thread{
-
+	
+	public static String currentTime() {
+		Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+		return "["+timeStamp.getHours()+":"+timeStamp.getMinutes()+":"+timeStamp.getSeconds()+"]";
+	}
+	
+	
 	Socket connection;
 	PrintWriter out;
 	Scanner in;
@@ -17,13 +24,21 @@ public class Connection extends Thread{
 	
 	boolean authenticated = false;
 	
-	String name;
-	int howToHandle;
+	public String name;
+	public int howToHandle;
 	
 	private ArrayList<Integer> value = new ArrayList<>();
 	
 	public ArrayList<Integer> getValue() {
 		return value;
+	}
+	
+	public String getValueAsString() {
+		String toReturn = "";
+		for(int i = 0; i<value.size();i++) {
+			toReturn+= " "+value.get(i);
+		}
+		return toReturn;
 	}
 	
 	public Connection(Socket connection) {
@@ -58,7 +73,7 @@ public class Connection extends Thread{
 					
 					switch (howToHandle) {
 					case ValueHandeler.SAVE_VAR:
-							if(value.size()>0)
+							if(value.size()!=0)
 								value.set(0, receavedValue);
 							else
 								value.add(receavedValue);
@@ -69,11 +84,15 @@ public class Connection extends Thread{
 						break;
 					
 					case ValueHandeler.LOGFILE_VAR:
-						
+						try {throw new Exception("function not built!");} catch (Exception e) {e.printStackTrace();}
 						break;
 						
 					case ValueHandeler.LOGFILE_ARRAY:
-						
+						try {throw new Exception("function not built!");} catch (Exception e) {e.printStackTrace();}
+						break;
+					
+					case ValueHandeler.RECEAVER_CLIENT:
+						System.err.println("A ReceaverClient just sent a value tag");
 						break;
 
 					default:
@@ -83,6 +102,9 @@ public class Connection extends Thread{
 				}
 				
 				if(args[0].equalsIgnoreCase("get")) {
+					
+					
+					
 					String reqestedName = args[1];
 					if(Server.getValueByName(reqestedName)!=null) {
 						ArrayList<Integer> foundValue = Server.getValueByName(reqestedName);
@@ -102,7 +124,7 @@ public class Connection extends Thread{
 //						answer+= "}";
 						
 						
-						answer+=String.valueOf(howToHandle);
+						answer+=String.valueOf(Server.getConnectionByName(reqestedName).howToHandle);
 						answer+="|";
 						for(int i = 0; i<foundValue.size();i++) {
 							answer += " "+foundValue.get(i);
@@ -126,7 +148,26 @@ public class Connection extends Thread{
 					if(password.equalsIgnoreCase(Settings.login_key)) {
 						name = deviceName;
 						howToHandle = dataHandeling;
-						authenticated = true;
+						
+						if(Server.getConnectionByName(deviceName)==null) {
+							authenticated = true;
+							System.out.println("Client "+deviceName+" successfully logged in!");
+						}else {
+							
+							Server.getConnectionByName(deviceName).kill();
+							
+							Connection clone = new Connection(connection);
+							
+							clone.name = name;
+							clone.howToHandle = howToHandle;
+							clone.authenticated = true;
+							
+							Server.connections.add(clone);
+							
+							System.out.println("Client "+deviceName+" successfully relogged in!");
+							kill();
+						}
+						
 						
 					}else {
 						try {throw new Exception("Wrong Password");} catch (Exception e) {e.printStackTrace();}
@@ -138,6 +179,12 @@ public class Connection extends Thread{
 			
 		}
 		
+	}
+	
+	public void kill() {
+		System.out.println("Killing "+name+"...");
+		Server.connections.remove(this);
+		listener.stop();
 	}
 	
 	public void sendMessage(String text) {
