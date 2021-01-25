@@ -29,6 +29,8 @@ public class Connection extends Thread{
 	
 	private ArrayList<Integer> value = new ArrayList<>();
 	
+	private ArrayList<String> triggerList = new ArrayList<>();
+	
 	public ArrayList<Integer> getValue() {
 		return value;
 	}
@@ -71,6 +73,14 @@ public class Connection extends Thread{
 				if(args[0].equalsIgnoreCase("set")) {
 					int receavedValue = Integer.valueOf(args[1]);
 					
+					for(Connection cc : Server.getConnections()) {
+						if(cc.howToHandle==-1) {	//Receaver
+							if(cc.triggerList.contains(name)) {
+								cc.sendMessage("triggered:"+name+":"+String.valueOf(receavedValue));
+							}
+						}
+					}
+					
 					switch (howToHandle) {
 					case ValueHandeler.SAVE_VAR:
 							if(value.size()!=0)
@@ -99,6 +109,12 @@ public class Connection extends Thread{
 						break;
 					}
 					
+				}
+				
+				if(args[0].equalsIgnoreCase("trigger")) {
+					triggerList.add(args[1]);
+					System.out.println(name + " trigger add "+args[1]);
+					sendMessage("successfully added trigger "+args[1]);
 				}
 				
 				if(args[0].equalsIgnoreCase("get")) {
@@ -133,6 +149,7 @@ public class Connection extends Thread{
 						
 						System.out.println("Answer:");
 						System.out.println(answer);
+						sendMessage(answer);
 						
 					}
 				}
