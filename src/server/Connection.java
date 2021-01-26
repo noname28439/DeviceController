@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import management.Settings;
+import panel.Frame;
 
 public class Connection extends Thread{
 	
@@ -63,7 +64,7 @@ public class Connection extends Thread{
 	public void run() {
 		
 		while(true) {
-			
+			try {
 			String rcv = in.nextLine();
 			if(Settings.transmission_print)
 				System.out.println("--> "+rcv);
@@ -206,6 +207,10 @@ public class Connection extends Thread{
 				}
 				
 			}
+			Frame.setList(Server.getConnections());
+		}catch (java.util.NoSuchElementException e) {
+			System.err.println(name+" lost connection...");
+		}
 			
 		}
 		

@@ -4,6 +4,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.sql.Timestamp;
 
+import panel.Frame;
 import server.Server;
 
 public class Main {
@@ -17,8 +18,8 @@ public class Main {
 	public static void main(String[] args) {
 		System.setOut(new ModifiedPrintStream(System.out));
 		ConsoleReader.load();
+		Frame.load();
 		Server.load();
-
 	}
 	
 	
