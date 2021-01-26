@@ -7,7 +7,6 @@ import socket
 from threading import Thread
 import time
 
-app = Flask(__name__)
 toaster = ToastNotifier()
 
 minimized = []
