@@ -19,7 +19,7 @@ public class ConsoleReader extends Thread{
 			String rcv = in.nextLine();
 			if(rcv.equalsIgnoreCase("list")) {
 				for(Connection cc : Server.getConnections())
-					System.out.println(cc.name+"["+cc.lastPingTime+"]"+" ==> "+cc.getValueAsString());
+					System.out.println(cc.name+""+cc.lastPingTime+""+" ==> "+cc.getValueAsString());
 			}
 		}
 		

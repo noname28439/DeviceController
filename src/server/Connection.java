@@ -31,7 +31,7 @@ public class Connection extends Thread{
 	
 	private ArrayList<String> triggerList = new ArrayList<>();
 	
-	public String lastPingTime = "no ping receaved yet...";
+	public String lastPingTime = "[no ping receaved yet...]";
 	
 	public ArrayList<Integer> getValue() {
 		return value;
