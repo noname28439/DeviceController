@@ -123,6 +123,13 @@ public class Connection extends Thread{
 					lastPingTime = currentTime();
 				}
 				
+				if(args[0].equalsIgnoreCase("list")) {
+					String answer = "";
+					for(Connection cc : Server.getConnections())
+						answer+=(cc.name+""+cc.lastPingTime+""+" ==> "+cc.getValueAsString()+"\n");
+					sendMessage(answer);
+				}
+				
 				if(args[0].equalsIgnoreCase("get")) {
 					
 					
