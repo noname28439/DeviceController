@@ -4,6 +4,9 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.sql.Timestamp;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import panel.Frame;
 import server.Server;
 

@@ -210,6 +210,7 @@ public class Connection extends Thread{
 			Frame.setList(Server.getConnections());
 		}catch (java.util.NoSuchElementException e) {
 			System.err.println(name+" lost connection...");
+			Thread.currentThread().stop();
 		}
 			
 		}
